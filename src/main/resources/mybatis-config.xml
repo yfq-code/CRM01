@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    该文件时mybatis的主配置文件,主要定义了数据库的配置信息，和指定映射（mapper）文件位置
+-->
+
+<!-- 首先还是约束文件 mybatis-3-config.dtd -->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- 配置环境根标签 -->
+<configuration>
+    <properties resource="jdbc.properties"/>
+    <!--起别名的-->
+    <typeAliases>
+        <package name="com.neu.crm.settings.domain"/>
+        <package name="com.neu.crm.workbench.domain"/>
+    </typeAliases>
+    <!--
+        配置环境，数据库连接信息，可以配置多个数据库
+        default 必须和下面的某一个环境id一致，表示访问该数据库
+    -->
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--POOLED表示使用连接池-->
+            <dataSource type="POOLED">
+                <!--
+                    接下来就是连接数据库的操作 name默认不可改
+                -->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.user}"/>
+                <property name="password" value="${jdbc.password}"/>
+
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!--在这指定映射文件位置-->
+    <mappers>
+        <package name="com.neu.crm.settings.dao"/>
+        <package name="com.neu.crm.workbench.dao"/>
+
+    </mappers>
+</configuration>

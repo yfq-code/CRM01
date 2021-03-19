@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.crm.workbench.dao.ActivityDao">  <!--用到的dao接口的全限定名称-->
+    <insert id="save">
+        insert into tbl_activity(
+            id,
+            owner,
+            name,
+            startDate,
+            endDate,
+            cost,
+            description,
+            createTime,
+            createBy
+        )
+        values(
+            #{id},
+            #{owner},
+            #{name},
+            #{startDate},
+            #{endDate},
+            #{cost},
+            #{description},
+            #{createTime},
+            #{createBy}
+        )
+    </insert>
+
+    <select id="getTotalByCondition" resultType="int">
+        select count(*) from tbl_activity
+        <where>
+            <if test="name!=null and name!=''">
+                name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and owner like '%' #{owner} '%'
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and startDate &gt; #{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and endDate &lt; #{endDate}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getActivityListByCondition" resultType="Activity">
+        select
+
+        id,
+        owner,
+        name,
+        startDate,
+        endDate
+
+        from tbl_activity
+        <where>
+            <if test="name!=null and name!=''">
+                name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and owner like '%' #{owner} '%'
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and startDate &gt; #{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and endDate &lt; #{endDate}
+            </if>
+        </where>
+        /*按照时间线排序*/
+        order by createTime desc
+
+        limit #{skipCount},#{pageSize}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_activity
+        where id in
+        /*遍历*/
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getActivityById" resultType="Activity">
+        select * from tbl_activity where id=#{id}
+    </select>
+
+    <update id="update">
+        update tbl_activity set
+
+        owner=#{owner},
+        name=#{name},
+        startDate=#{startDate},
+        endDate=#{endDate},
+        cost=#{cost},
+        description=#{description},
+        editTime=#{editTime},
+        editBy=#{editBy}
+
+        where id=#{id}
+    </update>
+
+    <select id="getActivityListByClueId" resultType="Activity">
+        select
+        car.id as id,
+        a.owner,
+        a.name,
+        a.startDate,
+        a.endDate
+
+        from tbl_activity a
+        join tbl_clue_activity_relation car
+        on a.id=car.activityId
+
+        where car.clueId=#{clueId}
+    </select>
+
+    <select id="getActivityListByNameAndNotByClueId" resultType="Activity">
+        select
+        id,
+        owner,
+        name,
+        startDate,
+        endDate
+        from tbl_activity
+        where name like '%' #{aname} '%' and id not in(
+            select
+            ActivityId
+            from tbl_clue_activity_relation
+            where clueId=#{clueId}
+        )
+    </select>
+
+
+    <select id="getActivityListByName" resultType="Activity">
+        select
+        id,
+        owner,
+        name,
+        startDate,
+        endDate
+        from tbl_activity
+        where name like '%' #{aname} '%'
+    </select>
+</mapper>

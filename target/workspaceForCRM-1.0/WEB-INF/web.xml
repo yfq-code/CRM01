@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <display-name>crm</display-name>
+    <!--欢迎文件-->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>com.neu.crm.web.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.neu.crm.web.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
+    <!--监听器-->
+    <listener>
+        <listener-class>com.neu.crm.web.listener.SysInitListener</listener-class>
+    </listener>
+
+    <!-- 用户控制器 -->
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>com.neu.crm.settings.web.controller.UserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/settings/user/login.do</url-pattern>  <!--当访问这个地址时就调用UserController方法-->
+    </servlet-mapping>
+
+
+    <!-- 市场活动控制器 -->
+    <servlet>
+        <servlet-name>ActivityController</servlet-name>
+        <servlet-class>com.neu.crm.workbench.web.controller.ActivityController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ActivityController</servlet-name>
+        <!--第一个请求，获取用户列表-->
+        <url-pattern>/workbench/Activity/getUserList.do</url-pattern>
+        <!--第二个请求，保存市场活动-->
+        <url-pattern>/workbench/Activity/save.do</url-pattern>
+        <!--第三个请求，查询市场活动-->
+        <url-pattern>/workbench/Activity/pageList.do</url-pattern>
+        <!--第四个请求，删除市场活动-->
+        <url-pattern>/workbench/Activity/delete.do</url-pattern>
+        <!--第五个请求，获取用户列表和市场活动-->
+        <url-pattern>/workbench/Activity/getUserListAndActivity.do</url-pattern>
+        <!--第六个请求，更新市场活动信息-->
+        <url-pattern>/workbench/Activity/update.do</url-pattern>
+        <!--第七个请求，显示市场活动信息细节-->
+        <url-pattern>/workbench/Activity/detail.do</url-pattern>
+        <!--第八个请求，显示备注信息列表-->
+        <url-pattern>/workbench/Activity/getRemarkListByAid.do</url-pattern>
+        <!--第九个请求，保存备注信息-->
+        <url-pattern>/workbench/Activity/saveRemark.do</url-pattern>
+        <!--第十个请求，删除备注信息-->
+        <url-pattern>/workbench/Activity/deleteRemark.do</url-pattern>
+        <!--第十一个请求，更新备注信息-->
+        <url-pattern>/workbench/Activity/updateRemark.do</url-pattern>
+    </servlet-mapping>
+
+    <!--线索控制器-->
+    <servlet>
+        <servlet-name>ClueController</servlet-name>
+        <servlet-class>com.neu.crm.workbench.web.controller.ClueController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClueController</servlet-name>
+        <!--第一个请求，获取用户列表-->
+        <url-pattern>/workbench/Clue/getUserList.do</url-pattern>
+        <!--第二个请求，保存线索信息-->
+        <url-pattern>/workbench/Clue/save.do</url-pattern>
+        <!--第三个请求，显示线索信息-->
+        <url-pattern>/workbench/Clue/detail.do</url-pattern>
+        <!--第四个请求，获取线索关联的市场活动信息-->
+        <url-pattern>/workbench/Clue/getActivityListByClueId.do</url-pattern>
+        <!--第五个请求，解除市场与线索关联信息-->
+        <url-pattern>/workbench/Clue/unbund.do</url-pattern>
+        <!--第六个请求，模糊查询市场活动-->
+        <url-pattern>/workbench/Clue/getActivityListByNameAndNotByClueId.do</url-pattern>
+        <!--第七个请求，关联的市场活动与线索-->
+        <url-pattern>/workbench/Clue/bund.do</url-pattern>
+        <!--第八个请求，模糊查询市场活动-->
+        <url-pattern>/workbench/Clue/getActivityListByName.do</url-pattern>
+        <!--第九个请求，转换线索-->
+        <url-pattern>/workbench/Clue/convert.do</url-pattern>
+    </servlet-mapping>
+
+    <!--交易控制器-->
+    <servlet>
+        <servlet-name>TranController</servlet-name>
+        <servlet-class>com.neu.crm.workbench.web.controller.TranController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TranController</servlet-name>
+        <!--第一个请求，增添交易记录-->
+        <url-pattern>/workbench/Tran/add.do</url-pattern>
+        <!--第二个请求，查询用户姓名-->
+        <url-pattern>/workbench/Tran/getCustomerName.do</url-pattern>
+        <!--第三个请求，保存交易信息-->
+        <url-pattern>/workbench/Tran/save.do</url-pattern>
+        <!--第四个请求，查看交易细节-->
+        <url-pattern>/workbench/Tran/detail.do</url-pattern>
+        <!--第五个请求，查看交易历史-->
+        <url-pattern>/workbench/Tran/getHistoryListByTranId.do</url-pattern>
+        <!--第六个请求，获取成交阶段数据-->
+        <url-pattern>/workbench/Tran/getCharts.do</url-pattern>
+    </servlet-mapping>
+</web-app>
